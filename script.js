@@ -3,6 +3,7 @@ let x = '';
 let y = '';
 let operator = '';
 let displayValue = '';
+let displayResult = '';
 
 
 // DOM element references
@@ -53,6 +54,9 @@ function operate(x, operator, y) {
 
 // Update the calculator display
 function populateDisplay(button) {
+    if (displayValue.length >= 9) {
+        return;
+    }
     displayValue += button;
     calcScreen.textContent = displayValue;
 }
@@ -123,10 +127,20 @@ equalsBtn.addEventListener('click', () => {
     x = parseFloat(x);
     y = parseFloat(y);
     const result = operate(x, operator, y);
-    calcScreen.textContent = result;
-    x = result.toString();
-    y = '';
-    operator = '';
+    // Check if output will be too long for screen display
+    if (result.toString().length > 9) {
+        displayResult = result.toString().slice(0,7) + '...'; // Shorten output for display
+        calcScreen.textContent = displayResult;
+        x = result.toString();
+        y = '';
+        operator = '';
+    }
+    else {
+        calcScreen.textContent = result;
+        x = result.toString();
+        y = '';
+        operator = '';
+    }
 });
 
 operatorBtn.forEach(button => {
