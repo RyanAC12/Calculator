@@ -13,6 +13,7 @@ body {
     margin-top: 200px;
     justify-content: center;
     align-items: center;
+    border-radius: 3px;
 }
 
 .screen {
@@ -20,7 +21,11 @@ body {
     height: 100px;
     background-color: goldenrod;
     margin: 10px;
-    padding: 2px;
+    padding: 10px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    font-size: 50px;
 }
 
 .buttons {
@@ -40,10 +45,21 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
+    user-select: none;
+    border-radius: 15px;
+}
+
+.btn:hover {
+    background-color: rgb(131, 122, 122);
+}
+
+.btn:active {
+    transform: scale(0.95);
 }
 
 .btn-clicked {
-    background-color: rgb(63, 59, 59);
+    background-color: rgb(131, 122, 122);
 }
 
 * {
