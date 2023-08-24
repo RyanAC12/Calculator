@@ -52,7 +52,7 @@ function operate(x, operator, y) {
             }
             return divide(x, y);
         default: 
-            return "Please provide a valid operator";
+            return "Error";
     }
 }
 
@@ -83,7 +83,7 @@ function mathQueue(button) {
         }
         operator = btnText;
         displayValue = ''; // Clear display for next input
-        decimalcounter = 0;
+        decimalCounter = 0;
     }
 }
 
@@ -145,23 +145,6 @@ operatorBtn.forEach(button => {
     button.addEventListener('click', () => {
         resetOperatorBackground();
         button.classList.add('btn-clicked');
-    });
-});
-
-// Get buttons that aren't operators for color change
-nonOperatorBtn.forEach(button => {
-    button.addEventListener('mousedown', () => {
-        button.classList.add('btn-clicked');
-    });
-});
-nonOperatorBtn.forEach(button => {
-    button.addEventListener('mouseup', () => {
-        button.classList.remove('btn-clicked');
-    });
-});
-nonOperatorBtn.forEach(button => {
-    button.addEventListener('mouseleave', () => {
-        button.classList.remove('btn-clicked');
     });
 });
 
