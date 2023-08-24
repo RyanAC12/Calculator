@@ -3,7 +3,6 @@ let x = '';
 let y = '';
 let operator = '';
 let displayValue = '';
-let decimalCounter = 0;
 
 
 // DOM element references
@@ -35,10 +34,6 @@ function divide(x, y) {
 
 // Core function to determine which operation to perform
 function operate(x, operator, y) {
-    if (decimalCounter > 1) {
-        return "Decimal error";
-    }
-
     switch (operator) {
         case '+':
             return add(x, y);
@@ -65,13 +60,9 @@ function populateDisplay(button) {
 // Manage user input and math operations
 function mathQueue(button) {
     btnText = button.textContent;
-    if (button.classList.contains('decimal')) {
-        decimalCounter++;
-    }
     if (button.classList.contains('num')) {
         if (operator) {
             y += btnText;
-            decimalCounter = 0; // Reset for the next number
         } else {
             x+= btnText;
         }
@@ -83,7 +74,6 @@ function mathQueue(button) {
         }
         operator = btnText;
         displayValue = ''; // Clear display for next input
-        decimalCounter = 0;
     }
 }
 
@@ -91,7 +81,6 @@ function mathQueue(button) {
 function newCalculation() {
     x = operate(parseFloat(x), operator, parseFloat(y)).toString();
     y = '';
-    decimalCounter = 0;
 }
 
 // Clear calculator's values and display
@@ -138,7 +127,6 @@ equalsBtn.addEventListener('click', () => {
     x = result.toString();
     y = '';
     operator = '';
-    decimalCounter = 0;
 });
 
 operatorBtn.forEach(button => {
