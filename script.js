@@ -1,9 +1,22 @@
+// Initialize calculator variables
 let x = '';
 let y = '';
 let operator = '';
 let displayValue = '';
 let decimalCounter = 0;
 
+
+// DOM element references
+const calcScreen = document.querySelector('.screen');
+const entryBtn = document.querySelectorAll('.entry');
+const numberBtn = document.querySelectorAll('.num');
+const equalsBtn = document.querySelector('#equals');
+const operatorBtn = document.querySelectorAll('.op');
+const nonOperatorBtn = document.querySelectorAll('.non-op');
+const clearBtn = document.querySelector('#clear');
+
+
+// Basic math operations
 function add(x, y) {
     return x + y;
 }
@@ -20,37 +33,36 @@ function divide(x, y) {
     return x / y;
 }
 
+// Core function to determine which operation to perform
 function operate(x, operator, y) {
     if (decimalCounter > 1) {
         return "Decimal error";
     }
-    if (operator == '+') {
-        return add(x, y);
-    }
-    else if (operator == '-') {
-        return subtract(x, y);
-    }
-    else if (operator == '*') {
-        return multiply(x, y);
-    }
-    else if (operator == '/') {
-        if (y === 0) {
-            return "Nice try";
-        }
-        return divide(x, y);
-    }
-    else {
-        return "Please provide a valid operator";
+
+    switch (operator) {
+        case '+':
+            return add(x, y);
+        case '-':
+            return subtract(x, y);
+        case '*':
+            return multiply(x, y);
+        case '/':
+            if (y === 0) {
+                return "Nice try"; // Preventing division by zero
+            }
+            return divide(x, y);
+        default: 
+            return "Please provide a valid operator";
     }
 }
 
-const calcScreen = document.querySelector('.screen');
-
+// Update the calculator display
 function populateDisplay(button) {
     displayValue += button;
     calcScreen.textContent = displayValue;
 }
 
+// Manage user input and math operations
 function mathQueue(button) {
     btnText = button.textContent;
     if (button.classList.contains('decimal')) {
@@ -59,7 +71,7 @@ function mathQueue(button) {
     if (button.classList.contains('num')) {
         if (operator) {
             y += btnText;
-            decimalCounter = 0;
+            decimalCounter = 0; // Reset for the next number
         } else {
             x+= btnText;
         }
@@ -70,17 +82,19 @@ function mathQueue(button) {
             newCalculation();
         }
         operator = btnText;
-        displayValue = '';
+        displayValue = ''; // Clear display for next input
         decimalcounter = 0;
     }
 }
 
+// Allow for multiple operations to be strung together
 function newCalculation() {
     x = operate(parseFloat(x), operator, parseFloat(y)).toString();
     y = '';
     decimalCounter = 0;
 }
 
+// Clear calculator's values and display
 function clear() {
     displayValue = '';
     x = '';
@@ -89,51 +103,67 @@ function clear() {
     calcScreen.textContent = '';
 }
 
+// Display the result of the current operation
 function displayTempResult() {
     calcScreen.textContent = operate(parseFloat(x), operator, parseFloat(y));
     displayValue = '';
 }
+
+// Reset CSS change for operator buttons
 function resetOperatorBackground() {
     operatorBtn.forEach(button => {
-        button.style.backgroundColor = '';
+        button.classList.remove('btn-clicked');
     })
 }
 
-const entryBtn = document.querySelectorAll('.entry');
-    entryBtn.forEach(button => {
-        button.addEventListener('click', () => {
-            resetOperatorBackground();
-            mathQueue(button);
-        });
+// Event listeners
+entryBtn.forEach(button => {
+    button.addEventListener('click', () => {
+        resetOperatorBackground();
+        mathQueue(button);
     });
+});
 
-const numberBtn = document.querySelectorAll('.num');
-    numberBtn.forEach(button => {
-        button.addEventListener('click', () => {
-            populateDisplay(button.textContent);
-        });
+numberBtn.forEach(button => {
+    button.addEventListener('click', () => {
+        populateDisplay(button.textContent);
     });
+});
 
-const equalsBtn = document.querySelector('#equals');
-    equalsBtn.addEventListener('click', () => {
-        x = parseFloat(x);
-        y = parseFloat(y);
-        const result = operate(x, operator, y);
-        calcScreen.textContent = result;
-        x = result.toString();
-        y = '';
-        operator = '';
-        decimalCounter = 0;
+equalsBtn.addEventListener('click', () => {
+    x = parseFloat(x);
+    y = parseFloat(y);
+    const result = operate(x, operator, y);
+    calcScreen.textContent = result;
+    x = result.toString();
+    y = '';
+    operator = '';
+    decimalCounter = 0;
+});
+
+operatorBtn.forEach(button => {
+    button.addEventListener('click', () => {
+        resetOperatorBackground();
+        button.classList.add('btn-clicked');
     });
+});
 
-const operatorBtn = document.querySelectorAll('.op');
-    operatorBtn.forEach(button => {
-        button.addEventListener('click', () => {
-            resetOperatorBackground();
-            button.style.backgroundColor = 'rgb(68, 64, 64)';
-        });
+// Get buttons that aren't operators for color change
+nonOperatorBtn.forEach(button => {
+    button.addEventListener('mousedown', () => {
+        button.classList.add('btn-clicked');
     });
+});
+nonOperatorBtn.forEach(button => {
+    button.addEventListener('mouseup', () => {
+        button.classList.remove('btn-clicked');
+    });
+});
+nonOperatorBtn.forEach(button => {
+    button.addEventListener('mouseleave', () => {
+        button.classList.remove('btn-clicked');
+    });
+});
 
-const clearBtn = document.querySelector('#clear');
-    clearBtn.addEventListener('click', clear);
-    clearBtn.addEventListener('click', resetOperatorBackground);
+clearBtn.addEventListener('click', clear);
+clearBtn.addEventListener('click', resetOperatorBackground);
