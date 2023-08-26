@@ -52,7 +52,7 @@ function operate(x, operator, y) {
 
 // Update the calculator display
 function populateDisplay(button) {
-    if (displayValue.length >= 9) {
+    if (displayValue.length >= 7) {
         return;
     }
     displayValue += button;
@@ -134,7 +134,7 @@ equalsBtn.addEventListener('click', () => {;
     else {
         result = operate(parseFloat(x), operator, parseFloat(y));
         // Check if output will be too long for screen display
-        if (result.toString().length > 9) {
+        if (result.toString().length > 7) {
             result = "Overflow Error";
         }
     }
