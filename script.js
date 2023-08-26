@@ -47,8 +47,6 @@ function operate(x, operator, y) {
                 return "Nice try"; // Preventing division by zero
             }
             return divide(x, y);
-        default: 
-            return "Error";
     }
 }
 
@@ -123,24 +121,28 @@ numberBtn.forEach(button => {
     });
 });
 
-equalsBtn.addEventListener('click', () => {
-    x = parseFloat(x);
-    y = parseFloat(y);
-    const result = operate(x, operator, y);
-    // Check if output will be too long for screen display
-    if (result.toString().length > 9) {
-        displayResult = result.toString().slice(0,7) + '...'; // Shorten output for display
-        calcScreen.textContent = displayResult;
-        x = result.toString();
-        y = '';
-        operator = '';
+equalsBtn.addEventListener('click', () => {;
+    let result;
+    // Check if x is being submitted by itself
+    if (x !== '' && operator == '' && y == '') {
+        result = x;
+    }
+    // Check if an operator is being submitted without x and/or y
+    else if (operator !== '' && (x == '' || y == '')) {
+        result = "Syntax Error"
     }
     else {
-        calcScreen.textContent = result;
-        x = result.toString();
-        y = '';
-        operator = '';
+        result = operate(parseFloat(x), operator, parseFloat(y));
+        // Check if output will be too long for screen display
+        if (result.toString().length > 9) {
+            result = "Overflow Error";
+        }
     }
+        
+    calcScreen.textContent = result;
+    x = result;
+    y = '';
+    operator = '';
 });
 
 operatorBtn.forEach(button => {
