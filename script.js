@@ -43,9 +43,6 @@ function operate(x, operator, y) {
         case '*':
             return multiply(x, y);
         case '/':
-            if (y === 0) {
-                return "Nice try"; // Preventing division by zero
-            }
             return divide(x, y);
     }
 }
@@ -129,7 +126,10 @@ equalsBtn.addEventListener('click', () => {;
     }
     // Check if an operator is being submitted without x and/or y
     else if (operator !== '' && (x == '' || y == '')) {
-        result = "Syntax Error"
+        result = "Syntax Error";
+    }
+    else if (operator == '/' && y == '0') {
+        result = "Nice try";
     }
     else {
         result = operate(parseFloat(x), operator, parseFloat(y));
