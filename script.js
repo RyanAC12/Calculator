@@ -104,6 +104,17 @@ function resetOperatorBackground() {
     })
 }
 
+// Check for multiple decimals in one variable
+function checkDecimals(str) {
+    const matches = str.match(/\./g);
+    if (matches && matches.length > 1) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
 // Event listeners
 entryBtn.forEach(button => {
     button.addEventListener('click', () => {
@@ -124,10 +135,15 @@ equalsBtn.addEventListener('click', () => {;
     if (x !== '' && operator == '' && y == '') {
         result = x;
     }
+    // Check for multiple decimals
+    if (checkDecimals(x) || checkDecimals(y)) {
+        result = "Syntax Error"
+    }
     // Check if an operator is being submitted without x and/or y
     else if (operator !== '' && (x == '' || y == '')) {
         result = "Syntax Error";
     }
+    // Check for division by 0
     else if (operator == '/' && y == '0') {
         result = "Nice try";
     }
